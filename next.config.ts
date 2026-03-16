@@ -1,8 +1,7 @@
-import type { NextConfig } from 'next';
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',                    // required for static export
+  basePath: '/web-pagina-montaje',    // repo name for GitHub Pages
+}
 
-const nextConfig: NextConfig = {
-  output: 'export',
-  basePath: process.env.PAGES_BASE_PATH,
-};
-
-export default nextConfig;
+module.exports = nextConfig;
