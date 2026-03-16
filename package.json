@@ -5,7 +5,7 @@
     "build": "next build"
   },
   "dependencies": {
-    "next": "15.1.10",
+    "next": "^15.5.12",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -13,6 +13,13 @@
     "@types/node": "^22.13.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
+    "gh-pages": "^6.3.0",
     "typescript": "^5.7.3"
-  }
+  },
+  "scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "export": "next build && next export",
+  "deploy": "npm run export && gh-pages -d out"
+}
 }

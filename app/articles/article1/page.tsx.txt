@@ -1,0 +1,212 @@
+import Link from "next/link";
+import "../article-detail.css";
+
+interface ArticleDetailProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default function ArticleDetailPage({ params }: ArticleDetailProps) {
+  // Simular datos del artículo (en producción, esto vendría de una base de datos o CMS)
+  const article = {
+    slug: params.slug,
+    title: "Introducción Completa a Next.js 14",
+    author: "Carlos García",
+    date: "15 de Marzo, 2026",
+    readTime: "12 min",
+    category: "Framework",
+    image: "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=1200&q=80",
+    content: `
+      <h2>¿Qué es Next.js?</h2>
+      <p>Next.js es un framework de React que proporciona una base sólida para construir aplicaciones web modernas. Fue creado por Vercel y se ha convertido en el estándar de facto para desarrollo fullstack con React.</p>
+
+      <h2>Características Principales</h2>
+      <p>Next.js 14 trae consigo varias mejoras significativas:</p>
+      <ul>
+        <li><strong>App Router:</strong> Un nuevo sistema de enrutamiento más potente y flexible</li>
+        <li><strong>Server Components:</strong> Componentes que se ejecutan en el servidor para mejor rendimiento</li>
+        <li><strong>API Routes:</strong> Crea endpoints de API sin necesidad de un servidor separado</li>
+        <li><strong>Static Generation:</strong> Genera páginas estáticas en tiempo de compilación</li>
+        <li><strong>Incremental Static Regeneration:</strong> Actualiza contenido estático sin reconstruir toda la aplicación</li>
+      </ul>
+
+      <h2>Instalación y Configuración</h2>
+      <p>Para comenzar con Next.js, necesitas tener Node.js instalado. Luego ejecuta:</p>
+      <pre><code>npx create-next-app@latest mi-app --typescript --tailwind</code></pre>
+
+      <h2>Estructura de Carpetas</h2>
+      <p>La estructura típica de un proyecto Next.js con App Router es:</p>
+      <pre><code>mi-app/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── articles/
+│   │   ├── page.tsx
+│   │   └── [slug]/
+│   │       └── page.tsx
+│   └── api/
+│       └── posts/
+│           └── route.ts
+├── public/
+├── package.json
+└── tsconfig.json</code></pre>
+
+      <h2>Server Components vs Client Components</h2>
+      <p>Una de las características más importantes de Next.js 13+ es el uso de Server Components por defecto. Los componentes del servidor:</p>
+      <ul>
+        <li>Se ejecutan en el servidor, reduciendo el JavaScript enviado al cliente</li>
+        <li>Pueden acceder directamente a bases de datos y APIs privadas</li>
+        <li>Mantienen información sensible en el servidor</li>
+      </ul>
+
+      <p>Los Client Components se marcan con "use client" y son necesarios para interactividad:</p>
+      <pre><code>'use client';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  return &lt;button onClick={() => setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}</code></pre>
+
+      <h2>Enrutamiento</h2>
+      <p>El App Router de Next.js utiliza el sistema de carpetas para definir rutas. Cada carpeta con un archivo page.tsx crea una ruta:</p>
+      <ul>
+        <li>app/page.tsx → /</li>
+        <li>app/articles/page.tsx → /articles</li>
+        <li>app/articles/[slug]/page.tsx → /articles/mi-articulo</li>
+      </ul>
+
+      <h2>Conclusión</h2>
+      <p>Next.js 14 es una excelente opción para construir aplicaciones web modernas, escalables y de alto rendimiento. Con sus Server Components, optimizaciones automáticas y excelente experiencia de desarrollo, es la herramienta perfecta para proyectos de cualquier tamaño.</p>
+    `,
+    relatedArticles: [
+      { title: "React Hooks Avanzados", slug: "react-hooks" },
+      { title: "TypeScript para React", slug: "typescript-react" },
+      { title: "Optimización de Rendimiento", slug: "performance" },
+    ],
+  };
+
+  return (
+    <div className="article-detail">
+      {/* Breadcrumb */}
+      <nav className="breadcrumb">
+        <Link href="/articles">Artículos</Link>
+        <span>/</span>
+        <span>{article.title}</span>
+      </nav>
+
+      {/* Article Header */}
+      <header className="article-detail-header">
+        <div className="article-detail-meta">
+          <span className="category-badge">{article.category}</span>
+          <span className="author">Por {article.author}</span>
+          <span className="date">{article.date}</span>
+          <span className="read-time">📖 {article.readTime}</span>
+        </div>
+        <h1 className="article-detail-title">{article.title}</h1>
+        <img
+          src={article.image}
+          alt={article.title}
+          className="article-detail-image"
+        />
+      </header>
+
+      {/* Article Content */}
+      <div className="article-detail-content">
+        <main className="article-body">
+          <div
+            className="article-text"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
+
+          {/* Share Section */}
+          <div className="article-share">
+            <h3>Comparte este artículo</h3>
+            <div className="share-buttons">
+              <button className="share-btn twitter">Twitter</button>
+              <button className="share-btn facebook">Facebook</button>
+              <button className="share-btn linkedin">LinkedIn</button>
+              <button className="share-btn copy">Copiar enlace</button>
+            </div>
+          </div>
+
+          {/* Author Card */}
+          <div className="author-card">
+            <img
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
+              alt={article.author}
+              className="author-avatar"
+            />
+            <div className="author-info">
+              <h3>{article.author}</h3>
+              <p>Desarrollador fullstack con 8 años de experiencia. Apasionado por React, Next.js y tecnologías modernas.</p>
+              <div className="author-social">
+                <a href="#">Twitter</a>
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        {/* Sidebar */}
+        <aside className="article-sidebar">
+          {/* Table of Contents */}
+          <div className="toc-box">
+            <h3>Contenido</h3>
+            <ul>
+              <li><a href="#que-es">¿Qué es Next.js?</a></li>
+              <li><a href="#caracteristicas">Características Principales</a></li>
+              <li><a href="#instalacion">Instalación</a></li>
+              <li><a href="#estructura">Estructura de Carpetas</a></li>
+              <li><a href="#componentes">Server vs Client</a></li>
+              <li><a href="#enrutamiento">Enrutamiento</a></li>
+            </ul>
+          </div>
+
+          {/* Related Articles */}
+          <div className="related-box">
+            <h3>Artículos Relacionados</h3>
+            <ul className="related-list">
+              {article.relatedArticles.map((related) => (
+                <li key={related.slug}>
+                  <Link href={`/articles/${related.slug}`}>
+                    {related.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* CTA Box */}
+          <div className="cta-box">
+            <h3>¿Necesitas ayuda?</h3>
+            <p>Si tienes preguntas sobre este artículo, no dudes en contactarnos.</p>
+            <Link href="/contact" className="btn btn-primary">
+              Contactar
+            </Link>
+          </div>
+        </aside>
+      </div>
+
+      {/* Related Articles Section */}
+      <section className="related-articles-section">
+        <h2>Más Artículos que Podrían Interesarte</h2>
+        <div className="related-articles-grid">
+          {article.relatedArticles.map((related) => (
+            <article key={related.slug} className="related-article-card">
+              <img
+                src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80"
+                alt={related.title}
+              />
+              <h3>{related.title}</h3>
+              <Link href={`/articles/${related.slug}`} className="read-more">
+                Leer →
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
