@@ -1,7 +1,12 @@
-export default function Home() {
+export default function HomePage() {
   return (
-    <main>
-      <div>Next.js on GitHub Pages</div>
-    </main>
+    <div>
+      <h1>Página de Inicio</h1>
+
+      <p>
+        Bienvenido a nuestro sitio web. Aquí puedes encontrar artículos
+        interesantes y contactar con nosotros.
+      </p>
+    </div>
   );
 }
