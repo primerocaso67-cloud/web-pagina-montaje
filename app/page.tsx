@@ -66,51 +66,19 @@ export default function HomePage() {
 
       {/* Latest Articles Preview */}
       <section className="latest-articles">
-        <h2 className="section-title">Últimos Artículos</h2>
+        <h2 className="section-title">Artículo Destacado</h2>
         <div className="articles-preview">
-          <article className="article-preview-card">
+          <article className="article-preview-card" style={{ margin: "0 auto", maxWidth: "950px" }}>
             <img
-              src="https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400&q=80"
-              alt="Introducción a Next.js"
+              src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80"
+              alt="Guía de uso de diskpart"
               className="article-preview-img"
             />
             <div className="article-preview-content">
-              <span className="article-category">Framework</span>
-              <h3>Introducción a Next.js</h3>
-              <p>Aprende los fundamentos de Next.js, el framework de React más poderoso para producción.</p>
-              <Link href="/articles/nextjs-intro" className="read-more">
-                Leer más →
-              </Link>
-            </div>
-          </article>
-
-          <article className="article-preview-card">
-            <img
-              src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80"
-              alt="React Hooks avanzados"
-              className="article-preview-img"
-            />
-            <div className="article-preview-content">
-              <span className="article-category">React</span>
-              <h3>React Hooks Avanzados</h3>
-              <p>Domina los hooks más poderosos de React y crea componentes reutilizables y eficientes.</p>
-              <Link href="/articles/react-hooks" className="read-more">
-                Leer más →
-              </Link>
-            </div>
-          </article>
-
-          <article className="article-preview-card">
-            <img
-              src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80"
-              alt="Optimización de rendimiento"
-              className="article-preview-img"
-            />
-            <div className="article-preview-content">
-              <span className="article-category">Performance</span>
-              <h3>Optimización de Rendimiento</h3>
-              <p>Mejora la velocidad de tu aplicación web con técnicas de optimización probadas.</p>
-              <Link href="/articles/performance" className="read-more">
+              <span className="article-category">Windows</span>
+              <h3>Guía de uso de diskpart</h3>
+              <p>Comandos esenciales para gestionar discos, particiones y volúmenes en Windows desde la consola.</p>
+              <Link href="/articles/diskpart" className="read-more">
                 Leer más →
               </Link>
             </div>

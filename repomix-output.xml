@@ -1,0 +1,2448 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.github/
+  workflows/
+    deploy.yml
+app/
+  articles/
+    article1/
+      article-detail.css.txt
+      page.tsx.txt
+    articles.css
+    page.tsx
+  contact/
+    contact.css
+    page.tsx
+  lib/
+    articles.ts
+  globals.css
+  home.css
+  layout.tsx
+  page.tsx
+other/
+  remove-build-cache-script
+  workflow npm montaje.png
+.gitignore
+git
+LICENSE
+next
+next.config.ts
+package.json
+README.md
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".github/workflows/deploy.yml">
+name: montaje
+
+on:
+  # Runs on pushes targeting the main branch
+  push:
+    branches:
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Setup Pages
+        id: setup_pages
+        uses: actions/configure-pages@v5
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+
+      - name: Build with Next.js
+        run: pnpm run build
+        env:
+          PAGES_BASE_PATH: ${{ steps.setup_pages.outputs.base_path }}
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+</file>
+
+<file path="app/articles/article1/article-detail.css.txt">
+/* BREADCRUMB */
+.breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    }
+    
+    .breadcrumb a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+    }
+    
+    .breadcrumb a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+    }
+    
+    /* ARTICLE HEADER */
+    .article-detail-header {
+    margin-bottom: 3rem;
+    }
+    
+    .article-detail-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    }
+    
+    .category-badge {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.375rem 0.875rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    }
+    
+    .article-detail-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    }
+    
+    .article-detail-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lg);
+    }
+    
+    /* ARTICLE CONTENT LAYOUT */
+    .article-detail-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    }
+    
+    .article-body {
+    background-color: var(--bg-white);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    }
+    
+    .article-text {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    }
+    
+    .article-text h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 2rem 0 1rem 0;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border-color);
+    }
+    
+    .article-text h2:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+    }
+    
+    .article-text p {
+    margin-bottom: 1.25rem;
+    text-align: justify;
+    }
+    
+    .article-text ul,
+    .article-text ol {
+    margin: 1.25rem 0 1.25rem 2rem;
+    }
+    
+    .article-text li {
+    margin-bottom: 0.75rem;
+    line-height: 1.8;
+    }
+    
+    .article-text pre {
+    background-color: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border-left: 4px solid var(--primary-color);
+    }
+    
+    .article-text code {
+    font-family: "Courier New", monospace;
+    font-size: 0.95rem;
+    color: #d63384;
+    }
+    
+    .article-text pre code {
+    color: var(--text-dark);
+    }
+    
+    /* SHARE SECTION */
+    .article-share {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    }
+    
+    .article-share h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    }
+    
+    .share-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    }
+    
+    .share-btn {
+    padding: 0.625rem 1.25rem;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    font-size: 0.95rem;
+    }
+    
+    .share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    }
+    
+    .share-btn.twitter:hover {
+        background-color: #1da1f2;
+        color: white;
+        border-color: #1da1f2;
+      }
+      
+      .share-btn.facebook:hover {
+        background-color: #4267b2;
+        color: white;
+        border-color: #4267b2;
+      }
+      
+      .share-btn.linkedin:hover {
+        background-color: #0a66c2;
+        color: white;
+        border-color: #0a66c2;
+      }
+      
+      .share-btn.copy:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+      
+      /* AUTHOR CARD */
+      .author-card {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: var(--bg-light);
+        border-radius: 0.75rem;
+        border-left: 4px solid var(--accent-color);
+      }
+      
+      .author-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+      }
+      
+      .author-info h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      
+      .author-info p {
+        color: var(--text-light);
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+      }
+      
+      .author-social {
+        display: flex;
+        gap: 1rem;
+      }
+      
+      .author-social a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+      
+      .author-social a:hover {
+        color: var(--secondary-color);
+        text-decoration: underline;
+      }
+      
+      /* SIDEBAR */
+      .article-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+      
+      .toc-box,
+      .related-box,
+      .cta-box {
+        background-color: var(--bg-white);
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-sm);
+        position: sticky;
+        top: 100px;
+      }
+      
+      .toc-box h3,
+      .related-box h3,
+      .cta-box h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 0.75rem;
+      }
+      
+      .toc-box ul,
+      .related-list {
+        list-style: none;
+      }
+      
+      .toc-box li,
+      .related-list li {
+        margin-bottom: 0.75rem;
+      }
+      
+      .toc-box a,
+      .related-list a {
+        color: var(--text-light);
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: var(--transition);
+        display: block;
+        padding: 0.5rem 0;
+        border-left: 3px solid transparent;
+        padding-left: 0.75rem;
+      }
+      
+      .toc-box a:hover,
+      .related-list a:hover {
+        color: var(--primary-color);
+        border-left-color: var(--primary-color);
+      }
+      
+      .cta-box p {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+      }
+      
+      .cta-box .btn-primary {
+        width: 100%;
+        text-align: center;
+      }
+      
+      /* RELATED ARTICLES SECTION */
+      .related-articles-section {
+        margin-top: 4rem;
+        padding: 3rem 2rem;
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        border-radius: 1rem;
+      }
+      
+      .related-articles-section h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      
+      .related-articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+      
+      .related-article-card {
+        background-color: var(--bg-white);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+      }
+      
+      .related-article-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+      }
+      
+      .related-article-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        transition: var(--transition);
+      }
+      
+      .related-article-card:hover img {
+        transform: scale(1.05);
+      }
+      
+      .related-article-card h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        padding: 1rem;
+        line-height: 1.4;
+      }
+      
+      .related-article-card .read-more {
+        display: block;
+        padding: 0 1rem 1rem;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+      
+      .related-article-card:hover .read-more {
+        color: var(--secondary-color);
+        transform: translateX(4px);
+      }
+      
+      /* RESPONSIVE */
+      @media (max-width: 1024px) {
+        .article-detail-content {
+          grid-template-columns: 1fr;
+        }
+      
+        .toc-box,
+        .related-box,
+        .cta-box {
+          position: static;
+        }
+      
+        .article-sidebar {
+          grid-column: 1;
+          grid-row: 2;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .article-detail-title {
+          font-size: 1.75rem;
+        }
+      
+        .article-detail-image {
+          height: 250px;
+        }
+      
+        .article-detail-meta {
+          gap: 0.75rem;
+          font-size: 0.85rem;
+        }
+      
+        .article-body {
+          padding: 1.5rem;
+        }
+      
+        .article-text {
+          font-size: 1rem;
+        }
+      
+        .article-text h2 {
+          font-size: 1.5rem;
+        }
+      
+        .article-text pre {
+          padding: 1rem;
+          font-size: 0.85rem;
+        }
+      
+        .author-card {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+      
+        .author-avatar {
+          width: 80px;
+          height: 80px;
+        }
+      
+        .author-social {
+          justify-content: center;
+        }
+      
+        .related-articles-section {
+          padding: 2rem 1rem;
+        }
+      
+        .related-articles-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+</file>
+
+<file path="app/articles/article1/page.tsx.txt">
+import Link from "next/link";
+import "../article-detail.css";
+
+interface ArticleDetailProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default function ArticleDetailPage({ params }: ArticleDetailProps) {
+  // Simular datos del artículo (en producción, esto vendría de una base de datos o CMS)
+  const article = {
+    slug: params.slug,
+    title: "Introducción Completa a Next.js 14",
+    author: "Carlos García",
+    date: "15 de Marzo, 2026",
+    readTime: "12 min",
+    category: "Framework",
+    image: "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=1200&q=80",
+    content: `
+      <h2>¿Qué es Next.js?</h2>
+      <p>Next.js es un framework de React que proporciona una base sólida para construir aplicaciones web modernas. Fue creado por Vercel y se ha convertido en el estándar de facto para desarrollo fullstack con React.</p>
+
+      <h2>Características Principales</h2>
+      <p>Next.js 14 trae consigo varias mejoras significativas:</p>
+      <ul>
+        <li><strong>App Router:</strong> Un nuevo sistema de enrutamiento más potente y flexible</li>
+        <li><strong>Server Components:</strong> Componentes que se ejecutan en el servidor para mejor rendimiento</li>
+        <li><strong>API Routes:</strong> Crea endpoints de API sin necesidad de un servidor separado</li>
+        <li><strong>Static Generation:</strong> Genera páginas estáticas en tiempo de compilación</li>
+        <li><strong>Incremental Static Regeneration:</strong> Actualiza contenido estático sin reconstruir toda la aplicación</li>
+      </ul>
+
+      <h2>Instalación y Configuración</h2>
+      <p>Para comenzar con Next.js, necesitas tener Node.js instalado. Luego ejecuta:</p>
+      <pre><code>npx create-next-app@latest mi-app --typescript --tailwind</code></pre>
+
+      <h2>Estructura de Carpetas</h2>
+      <p>La estructura típica de un proyecto Next.js con App Router es:</p>
+      <pre><code>mi-app/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── articles/
+│   │   ├── page.tsx
+│   │   └── [slug]/
+│   │       └── page.tsx
+│   └── api/
+│       └── posts/
+│           └── route.ts
+├── public/
+├── package.json
+└── tsconfig.json</code></pre>
+
+      <h2>Server Components vs Client Components</h2>
+      <p>Una de las características más importantes de Next.js 13+ es el uso de Server Components por defecto. Los componentes del servidor:</p>
+      <ul>
+        <li>Se ejecutan en el servidor, reduciendo el JavaScript enviado al cliente</li>
+        <li>Pueden acceder directamente a bases de datos y APIs privadas</li>
+        <li>Mantienen información sensible en el servidor</li>
+      </ul>
+
+      <p>Los Client Components se marcan con "use client" y son necesarios para interactividad:</p>
+      <pre><code>'use client';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  return &lt;button onClick={() => setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}</code></pre>
+
+      <h2>Enrutamiento</h2>
+      <p>El App Router de Next.js utiliza el sistema de carpetas para definir rutas. Cada carpeta con un archivo page.tsx crea una ruta:</p>
+      <ul>
+        <li>app/page.tsx → /</li>
+        <li>app/articles/page.tsx → /articles</li>
+        <li>app/articles/[slug]/page.tsx → /articles/mi-articulo</li>
+      </ul>
+
+      <h2>Conclusión</h2>
+      <p>Next.js 14 es una excelente opción para construir aplicaciones web modernas, escalables y de alto rendimiento. Con sus Server Components, optimizaciones automáticas y excelente experiencia de desarrollo, es la herramienta perfecta para proyectos de cualquier tamaño.</p>
+    `,
+    relatedArticles: [
+      { title: "React Hooks Avanzados", slug: "react-hooks" },
+      { title: "TypeScript para React", slug: "typescript-react" },
+      { title: "Optimización de Rendimiento", slug: "performance" },
+    ],
+  };
+
+  return (
+    <div className="article-detail">
+      {/* Breadcrumb */}
+      <nav className="breadcrumb">
+        <Link href="/articles">Artículos</Link>
+        <span>/</span>
+        <span>{article.title}</span>
+      </nav>
+
+      {/* Article Header */}
+      <header className="article-detail-header">
+        <div className="article-detail-meta">
+          <span className="category-badge">{article.category}</span>
+          <span className="author">Por {article.author}</span>
+          <span className="date">{article.date}</span>
+          <span className="read-time">📖 {article.readTime}</span>
+        </div>
+        <h1 className="article-detail-title">{article.title}</h1>
+        <img
+          src={article.image}
+          alt={article.title}
+          className="article-detail-image"
+        />
+      </header>
+
+      {/* Article Content */}
+      <div className="article-detail-content">
+        <main className="article-body">
+          <div
+            className="article-text"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
+
+          {/* Share Section */}
+          <div className="article-share">
+            <h3>Comparte este artículo</h3>
+            <div className="share-buttons">
+              <button className="share-btn twitter">Twitter</button>
+              <button className="share-btn facebook">Facebook</button>
+              <button className="share-btn linkedin">LinkedIn</button>
+              <button className="share-btn copy">Copiar enlace</button>
+            </div>
+          </div>
+
+          {/* Author Card */}
+          <div className="author-card">
+            <img
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
+              alt={article.author}
+              className="author-avatar"
+            />
+            <div className="author-info">
+              <h3>{article.author}</h3>
+              <p>Desarrollador fullstack con 8 años de experiencia. Apasionado por React, Next.js y tecnologías modernas.</p>
+              <div className="author-social">
+                <a href="#">Twitter</a>
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        {/* Sidebar */}
+        <aside className="article-sidebar">
+          {/* Table of Contents */}
+          <div className="toc-box">
+            <h3>Contenido</h3>
+            <ul>
+              <li><a href="#que-es">¿Qué es Next.js?</a></li>
+              <li><a href="#caracteristicas">Características Principales</a></li>
+              <li><a href="#instalacion">Instalación</a></li>
+              <li><a href="#estructura">Estructura de Carpetas</a></li>
+              <li><a href="#componentes">Server vs Client</a></li>
+              <li><a href="#enrutamiento">Enrutamiento</a></li>
+            </ul>
+          </div>
+
+          {/* Related Articles */}
+          <div className="related-box">
+            <h3>Artículos Relacionados</h3>
+            <ul className="related-list">
+              {article.relatedArticles.map((related) => (
+                <li key={related.slug}>
+                  <Link href={`/articles/${related.slug}`}>
+                    {related.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* CTA Box */}
+          <div className="cta-box">
+            <h3>¿Necesitas ayuda?</h3>
+            <p>Si tienes preguntas sobre este artículo, no dudes en contactarnos.</p>
+            <Link href="/contact" className="btn btn-primary">
+              Contactar
+            </Link>
+          </div>
+        </aside>
+      </div>
+
+      {/* Related Articles Section */}
+      <section className="related-articles-section">
+        <h2>Más Artículos que Podrían Interesarte</h2>
+        <div className="related-articles-grid">
+          {article.relatedArticles.map((related) => (
+            <article key={related.slug} className="related-article-card">
+              <img
+                src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80"
+                alt={related.title}
+              />
+              <h3>{related.title}</h3>
+              <Link href={`/articles/${related.slug}`} className="read-more">
+                Leer →
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+</file>
+
+<file path="app/articles/articles.css">
+.articles-page {
+    width: 100%;
+    }
+    
+    /* ARTICLES HEADER */
+    .articles-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 1rem;
+    }
+    
+    .articles-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    }
+    
+    .articles-header p {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    }
+    
+    /* FILTERS */
+    .articles-filters {
+    margin-bottom: 3rem;
+    }
+    
+    .articles-filters h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    }
+    
+    .filter-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+    padding: 0.5rem 1.25rem;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    border-radius: 2rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    font-size: 0.95rem;
+    }
+    
+    .filter-btn:hover,
+    .filter-btn:focus {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background-color: var(--bg-light);
+    }
+    
+    .filter-btn:active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    }
+    
+    /* ARTICLES GRID */
+    .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+    }
+    
+    .article-card {
+    background-color: var(--bg-white);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    }
+    
+    .article-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    }
+    
+    .article-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+    }
+    
+    .article-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+    }
+    
+    .article-card:hover .article-image {
+    transform: scale(1.08);
+    }
+    
+    .article-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.375rem 0.875rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    }
+    
+    .article-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    }
+    
+    .article-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-light);
+    }
+    
+    .article-date {
+    font-weight: 500;
+    }
+    
+    .article-read-time {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    }
+    
+    .article-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    transition: var(--transition);
+    }
+    
+    .article-card:hover .article-title {
+    color: var(--primary-color);
+    }
+    
+    .article-excerpt {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    }
+    
+    .article-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    }
+    
+    .article-author {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    font-weight: 500;
+    }
+    
+    .article-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    }
+    
+    .article-link:hover {
+    color: var(--secondary-color);
+    transform: translateX(4px);
+    }
+    
+    /* NEWSLETTER SECTION */
+    .newsletter-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 3rem 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    }
+    
+    .newsletter-section h2 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      
+      .newsletter-section p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.95;
+      }
+      
+      .newsletter-form {
+        display: flex;
+        gap: 0.75rem;
+        max-width: 500px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .newsletter-input {
+        flex: 1;
+        min-width: 250px;
+        padding: 0.875rem 1.25rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-family: inherit;
+      }
+      
+      .newsletter-input::placeholder {
+        color: #d1d5db;
+      }
+      
+      .newsletter-form .btn-primary {
+        white-space: nowrap;
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+      }
+      
+      .newsletter-form .btn-primary:hover {
+        background-color: #d97706;
+        border-color: #d97706;
+      }
+      
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .articles-header h1 {
+          font-size: 1.875rem;
+        }
+      
+        .articles-grid {
+          grid-template-columns: 1fr;
+        }
+      
+        .filter-buttons {
+          gap: 0.5rem;
+        }
+      
+        .filter-btn {
+          padding: 0.375rem 1rem;
+          font-size: 0.875rem;
+        }
+      
+        .article-card {
+          flex-direction: column;
+        }
+      
+        .article-image-wrapper {
+          height: 180px;
+        }
+      
+        .article-footer {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+      
+        .newsletter-form {
+          flex-direction: column;
+        }
+      
+        .newsletter-input {
+          min-width: 100%;
+        }
+      
+        .newsletter-section {
+          padding: 2rem 1rem;
+        }
+      }
+</file>
+
+<file path="app/contact/contact.css">
+
+</file>
+
+<file path="app/lib/articles.ts">
+const articles = [
+    {
+        title: "DISPART Guide: Overview",
+        content: "This guide covers the essential aspects of DISPART, providing valuable insights and instructions to users."
+    },
+    {
+        title: "DISPART Guide: Installation",
+        content: "To install DISPART, follow these steps: 1. Download the package,..."
+    },
+    {
+        title: "DISPART Guide: Usage",
+        content: "Using DISPART effectively can enhance your experience. Key commands include..."
+    }
+];
+
+export default articles;
+</file>
+
+<file path="app/globals.css">
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --accent-color: #f59e0b;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --bg-light: #f9fafb;
+    --bg-white: #ffffff;
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    line-height: 1.6;
+  }
+  
+  /* HEADER & NAVIGATION */
+  .header {
+    background-color: var(--bg-white);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+  }
+  
+  .tagline {
+    font-size: 0.875rem;
+    color: var(--text-light);
+  }
+  
+  .nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: var(--transition);
+    position: relative;
+  }
+  
+  .nav-link:hover {
+    color: var(--primary-color);
+    background-color: var(--bg-light);
+  }
+  
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  /* MAIN CONTENT */
+  .main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    min-height: calc(100vh - 200px);
+  }
+  
+  /* FOOTER */
+  .footer {
+    background-color: var(--text-dark);
+    color: #f3f4f6;
+    margin-top: 4rem;
+    padding: 3rem 2rem 1rem;
+  }
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .footer-section h3 {
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+  }
+  
+  .footer-section p {
+    color: #d1d5db;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-section a {
+    color: #d1d5db;
+    text-decoration: none;
+    transition: var(--transition);
+  }
+  
+  .footer-section a:hover {
+    color: var(--accent-color);
+  }
+  
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid #374151;
+    text-align: center;
+    color: #9ca3af;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .header-container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .nav {
+      gap: 1rem;
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .nav-link {
+      font-size: 0.875rem;
+      padding: 0.375rem 0.75rem;
+    }
+  
+    .main-content {
+      padding: 1.5rem 1rem;
+    }
+  }
+</file>
+
+<file path="app/home.css">
+/* HERO SECTION */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 4rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 1rem;
+    }
+    
+    .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    }
+    
+    .hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    }
+    
+    .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    }
+    
+    .btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    }
+    
+    .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    }
+    
+    .btn-primary:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    }
+    
+    .btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    }
+    
+    .btn-secondary:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    }
+    
+    .hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    .hero-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    }
+    
+    /* FEATURES SECTION */
+    .features {
+    margin-bottom: 4rem;
+    }
+    
+    .section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+    text-align: center;
+    }
+    
+    .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    }
+    
+    .feature-card {
+    background-color: var(--bg-white);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    }
+    
+    .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+    }
+    
+    .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: var(--text-dark);
+      }
+      
+      .feature-card p {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+      
+      /* LATEST ARTICLES SECTION */
+      .latest-articles {
+        margin-bottom: 4rem;
+      }
+      
+      .articles-preview {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+      }
+      
+      .article-preview-card {
+        background-color: var(--bg-white);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .article-preview-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+      }
+      
+      .article-preview-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: var(--transition);
+      }
+      
+      .article-preview-card:hover .article-preview-img {
+        transform: scale(1.05);
+      }
+      
+      .article-preview-content {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        flex-grow: 1;
+      }
+      
+      .article-category {
+        display: inline-block;
+        background-color: var(--accent-color);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        width: fit-content;
+      }
+      
+      .article-preview-card h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        line-height: 1.4;
+      }
+      
+      .article-preview-card p {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        flex-grow: 1;
+      }
+      
+      .read-more {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+        display: inline-block;
+        margin-top: 0.5rem;
+      }
+      
+      .read-more:hover {
+        color: var(--secondary-color);
+        transform: translateX(4px);
+      }
+      
+      /* CTA SECTION */
+      .cta-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 1rem;
+        text-align: center;
+        margin-top: 4rem;
+      }
+      
+      .cta-section h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+      
+      .cta-section p {
+        font-size: 1.125rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.95;
+      }
+      
+      .cta-section .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+      }
+      
+      .cta-section .btn-primary:hover {
+        background-color: #d97706;
+        border-color: #d97706;
+      }
+      
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          padding: 1.5rem;
+        }
+      
+        .hero-title {
+          font-size: 2rem;
+        }
+      
+        .hero-subtitle {
+          font-size: 1rem;
+        }
+      
+        .hero-buttons {
+          flex-direction: column;
+        }
+      
+        .btn {
+          width: 100%;
+        }
+      
+        .section-title {
+          font-size: 1.75rem;
+        }
+      
+        .articles-preview {
+          grid-template-columns: 1fr;
+        }
+      
+        .cta-section {
+          padding: 2rem 1rem;
+        }
+      
+        .cta-section h2 {
+          font-size: 1.5rem;
+        }
+      }
+</file>
+
+<file path="other/remove-build-cache-script">
+rm -rf node_modules package-lock.json
+</file>
+
+<file path=".gitignore">
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+.env
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+</file>
+
+<file path="git">
+
+</file>
+
+<file path="LICENSE">
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <https://unlicense.org>
+</file>
+
+<file path="next">
+
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+</file>
+
+<file path="app/articles/page.tsx">
+import Link from "next/link";
+import "./articles.css";
+
+interface Article {
+  id: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  image: string;
+  date: string;
+  author: string;
+  readTime: string;
+  slug: string;
+}
+
+export default function ArticlesPage() {
+  const articles: Article[] = [
+    {
+      id: "1",
+      title: "Introducción Completa a Next.js 14",
+      excerpt: "Aprende los fundamentos de Next.js, el framework de React más poderoso. Cubrimos App Router, Server Components, y más.",
+      category: "Framework",
+      image: "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&q=80",
+      date: "15 de Marzo, 2026",
+      author: "Carlos García",
+      readTime: "12 min",
+      slug: "nextjs-intro",
+    },
+    {
+      id: "2",
+      title: "Domina React Hooks: Guía Avanzada",
+      excerpt: "Explora hooks avanzados como useContext, useReducer y custom hooks. Crea componentes reutilizables y eficientes.",
+      category: "React",
+      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80",
+      date: "14 de Marzo, 2026",
+      author: "María López",
+      readTime: "15 min",
+      slug: "react-hooks",
+    },
+    {
+      id: "3",
+      title: "Optimización de Rendimiento Web",
+      excerpt: "Mejora la velocidad de tu aplicación con técnicas de optimización. Lazy loading, code splitting, y más estrategias.",
+      category: "Performance",
+      image: "https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=600&q=80",
+      date: "13 de Marzo, 2026",
+      author: "Juan Martínez",
+      readTime: "10 min",
+      slug: "performance",
+    },
+    {
+      id: "4",
+      title: "TypeScript para Desarrolladores React",
+      excerpt: "Integra TypeScript en tus proyectos React. Tipos, interfaces, y mejores prácticas para código más seguro.",
+      category: "TypeScript",
+      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80",
+      date: "12 de Marzo, 2026",
+      author: "Ana Rodríguez",
+      readTime: "14 min",
+      slug: "typescript-react",
+    },
+    {
+      id: "5",
+      title: "Tailwind CSS: Diseño Rápido y Eficiente",
+      excerpt: "Crea interfaces hermosas sin escribir CSS personalizado. Aprende las utilidades de Tailwind y personalización.",
+      category: "CSS",
+      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
+      date: "11 de Marzo, 2026",
+      author: "David Chen",
+      readTime: "9 min",
+      slug: "tailwind-css",
+    },
+    {
+      id: "6",
+      title: "API REST con Node.js y Express",
+      excerpt: "Construye APIs escalables y seguras con Node.js. Autenticación, validación, y mejores prácticas incluidas.",
+      category: "Backend",
+      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80",
+      date: "10 de Marzo, 2026",
+      author: "Miguel Sánchez",
+      readTime: "16 min",
+      slug: "nodejs-api",
+    },
+  ];
+
+  const categories = ["Todos", ...new Set(articles.map(a => a.category))];
+
+  return (
+    <div className="articles-page">
+      {/* Header */}
+      <div className="articles-header">
+        <h1>Todos Nuestros Artículos</h1>
+        <p>Explora nuestra colección de tutoriales, guías y mejores prácticas en desarrollo web</p>
+      </div>
+
+      {/* Filter Buttons */}
+      <div className="articles-filters">
+        <h3>Filtrar por categoría:</h3>
+        <div className="filter-buttons">
+          {categories.map((category) => (
+            <button key={category} className="filter-btn">
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Articles Grid */}
+      <div className="articles-grid">
+        {articles.map((article) => (
+          <article key={article.id} className="article-card">
+            <div className="article-image-wrapper">
+              <img
+                src={article.image}
+                alt={article.title}
+                className="article-image"
+              />
+              <span className="article-badge">{article.category}</span>
+            </div>
+
+            <div className="article-body">
+              <div className="article-meta">
+                <span className="article-date">{article.date}</span>
+                <span className="article-read-time">📖 {article.readTime}</span>
+              </div>
+
+              <h2 className="article-title">{article.title}</h2>
+              <p className="article-excerpt">{article.excerpt}</p>
+
+              <div className="article-footer">
+                <span className="article-author">Por {article.author}</span>
+                <Link href={`/articles/${article.slug}`} className="article-link">
+                  Leer Artículo →
+                </Link>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {/* Newsletter Section */}
+      <section className="newsletter-section">
+        <h2>Suscríbete a Nuestro Newsletter</h2>
+        <p>Recibe los últimos artículos directamente en tu bandeja de entrada</p>
+        <form className="newsletter-form">
+          <input
+            type="email"
+            placeholder="Tu correo electrónico"
+            required
+            className="newsletter-input"
+          />
+          <button type="submit" className="btn btn-primary">
+            Suscribirse
+          </button>
+        </form>
+      </section>
+    </div>
+  );
+}
+</file>
+
+<file path="app/contact/page.tsx">
+"use client";
+
+import { useState } from "react";
+import "./contact.css";
+
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+}
+
+export default function ContactPage() {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Simular envío del formulario
+    setTimeout(() => {
+      setSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      setLoading(false);
+
+      // Resetear mensaje después de 5 segundos
+      setTimeout(() => setSubmitted(false), 5000);
+    }, 1000);
+  };
+
+  const contactInfo = [
+    {
+      id: 1,
+      icon: "📍",
+      title: "Ubicación",
+      content: "Madrid, España",
+    },
+    {
+      id: 2,
+      icon: "📧",
+      title: "Email",
+      content: "info@techblog.com",
+    },
+    {
+      id: 3,
+      icon: "📱",
+      title: "Teléfono",
+      content: "+34 123 456 789",
+    },
+    {
+      id: 4,
+      icon: "⏰",
+      title: "Horario",
+      content: "Lunes - Viernes, 9:00 - 18:00",
+    },
+  ];
+
+  return (
+    <div className="contact-page">
+      {/* Header */}
+      <div className="contact-header">
+        <h1>Contacta con Nosotros</h1>
+        <p>
+          ¿Tienes preguntas o sugerencias? Nos encantaría escucharte. Rellena el
+          formulario y nos pondremos en contacto lo antes posible.
+        </p>
+      </div>
+
+      {/* Main Content */}
+      <div className="contact-container">
+        {/* Contact Info Cards */}
+        <div className="contact-info-grid">
+          {contactInfo.map((info) => (
+            <div key={info.id} className="info-card">
+              <div className="info-icon">{info.icon}</div>
+              <h3>{info.title}</h3>
+              <p>{info.content}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Form Section */}
+        <div className="form-section">
+          <div className="form-wrapper">
+            <h2>Envíanos un Mensaje</h2>
+
+            {submitted && (
+              <div className="success-message">
+                <div className="success-icon">✓</div>
+                <h3>¡Mensaje Enviado!</h3>
+                <p>Gracias por tu mensaje. Nos pondremos en contacto pronto.</p>
+              </div>
+            )}
+
+            {!submitted && (
+              <form onSubmit={handleSubmit} className="contact-form">
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="name">Nombre *</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      placeholder="Tu nombre completo"
+                      className="form-input"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">Email *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      placeholder="tu@email.com"
+                      className="form-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="phone">Teléfono</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+34 123 456 789"
+                      className="form-input"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="subject">Asunto *</label>
+                    <select
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required
+                      className="form-input"
+                    >
+                      <option value="">Selecciona un asunto</option>
+                      <option value="general">Consulta General</option>
+                      <option value="article">Sobre un Artículo</option>
+                      <option value="collaboration">Colaboración</option>
+                      <option value="feedback">Feedback</option>
+                      <option value="other">Otro</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="message">Mensaje *</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    placeholder="Escribe tu mensaje aquí..."
+                    rows={6}
+                    className="form-textarea"
+                  />
+                </div>
+
+                <div className="form-note">
+                  <p>* Campos requeridos</p>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn btn-primary btn-large"
+                >
+                  {loading ? "Enviando..." : "Enviar Mensaje"}
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* Additional Info */}
+          <div className="faq-section">
+            <h3>Preguntas Frecuentes</h3>
+            <div className="faq-items">
+              <details className="faq-item">
+                <summary>¿Cuál es el tiempo de respuesta?</summary>
+                <p>
+                  Respondemos a todos los mensajes dentro de 24-48 horas hábiles. Para
+                  consultas urgentes, llámanos directamente.
+                </p>
+              </details>
+
+              <details className="faq-item">
+                <summary>¿Puedo colaborar con TechBlog?</summary>
+                <p>
+                  ¡Claro! Si eres un desarrollador apasionado y quieres compartir tu
+                  conocimiento, nos encantaría trabajar contigo. Contáctanos con el asunto
+                  "Colaboración".
+                </p>
+              </details>
+
+              <details className="faq-item">
+                <summary>¿Ofrecen consultoría personalizada?</summary>
+                <p>
+                  Sí, ofrecemos servicios de consultoría para proyectos específicos.
+                  Contáctanos para discutir tus necesidades.
+                </p>
+              </details>
+
+              <details className="faq-item">
+                <summary>¿Cómo puedo suscribirme al newsletter?</summary>
+                <p>
+                  Puedes suscribirte en la sección de newsletter en la página de artículos
+                  o enviándonos un email solicitándolo.
+                </p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Map Section */}
+      <div className="map-section">
+        <h2>Ubicación</h2>
+        <div className="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3120.5267865024697!2d-3.7037902!3d40.4168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDI1JzAuNiJOIDPCsDQyJzEzLjQiVw!5e0!3m2!1ses!2ses!4v1234567890"
+            width="100%"
+            height="400"
+            style={{ border: 0, borderRadius: "0.75rem" }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Ubicación de TechBlog"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="next.config.ts">
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',                    // required for static export
+  basePath: '/web-pagina-montaje',    // repo name for GitHub Pages
+}
+
+module.exports = nextConfig;
+</file>
+
+<file path="package.json">
+{
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbo",
+    "build": "next build"
+  },
+  "dependencies": {
+    "next": "^15.5.12",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "gh-pages": "^6.3.0",
+    "typescript": "^5.7.3"
+  },
+  "scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "export": "next build && next export",
+  "deploy": "npm run export && gh-pages -d out"
+}
+}
+</file>
+
+<file path="README.md">
+# Deploy Next.js to GitHub Pages
+
+This is a Next.js template which can be deployed to GitHub Pages as a static site.
+
+## Deploying to GitHub Pages
+
+1.  Create a new public GitHub repository
+2.  Push the starter code to the `main` branch
+3.  On GitHub, go to **Settings** > **Pages** > **Source**, and choose **GitHub Actions** as the source
+4.  Make a commit and push it to see the changes on GitHub Pages
+
+Congratulations! You should have a URL like:
+
+```bash
+https://<github-user-name>.github.io/<github-project-name>/
+```
+
+For more information, see our [deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying/static-exports).
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+</file>
+
+<file path="app/layout.tsx">
+import Link from "next/link";
+import "./globals.css";
+
+export const metadata = {
+  title: "Tech Blog - Artículos sobre Desarrollo Web",
+  description: "Descubre artículos sobre Next.js, React y desarrollo web moderno",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="es">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body>
+        <header className="header">
+          <div className="header-container">
+            <div className="logo">
+              <h1>TechBlog</h1>
+              <p className="tagline">Artículos sobre Desarrollo Web</p>
+            </div>
+            <nav className="nav">
+              <Link href="/" className="nav-link">Inicio</Link>
+              <Link href="/articles" className="nav-link">Artículos</Link>
+              <Link href="/contact" className="nav-link">Contacto</Link>
+            </nav>
+          </div>
+        </header>
+
+        <main className="main-content">
+          {children}
+        </main>
+
+        <footer className="footer">
+          <div className="footer-content">
+            <div className="footer-section">
+              <h3>Sobre TechBlog</h3>
+              <p>Tu fuente de conocimiento en desarrollo web y tecnología moderna.</p>
+            </div>
+            <div className="footer-section">
+              <h3>Enlaces Rápidos</h3>
+              <ul>
+                <li><Link href="/">Inicio</Link></li>
+                <li><Link href="/articles">Artículos</Link></li>
+                <li><Link href="/contact">Contacto</Link></li>
+              </ul>
+            </div>
+            <div className="footer-section">
+              <h3>Contacto</h3>
+              <p>Email: info@techblog.com</p>
+              <p>Tel: +34 123 456 789</p>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2026 TechBlog. Todos los derechos reservados.</p>
+          </div>
+        </footer>
+      </body>
+    </html>
+  );
+}
+</file>
+
+<file path="app/page.tsx">
+import Link from "next/link";
+import "./home.css";
+
+export default function HomePage() {
+  const features = [
+    {
+      id: 1,
+      icon: "📚",
+      title: "Artículos Detallados",
+      description: "Guías completas y tutoriales sobre desarrollo web moderno",
+    },
+    {
+      id: 2,
+      icon: "⚡",
+      title: "Contenido Actualizado",
+      description: "Siempre al día con las últimas tecnologías y mejores prácticas",
+    },
+    {
+      id: 3,
+      icon: "🤝",
+      title: "Comunidad Activa",
+      description: "Conecta con otros desarrolladores y comparte tu conocimiento",
+    },
+  ];
+
+  return (
+    <div>
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="hero-content">
+          <h1 className="hero-title">Bienvenido a TechBlog</h1>
+          <p className="hero-subtitle">
+            Tu fuente de conocimiento en desarrollo web, React, Next.js y tecnologías modernas
+          </p>
+          <div className="hero-buttons">
+            <Link href="/articles" className="btn btn-primary">
+              Explorar Artículos
+            </Link>
+            <Link href="/contact" className="btn btn-secondary">
+              Contactar
+            </Link>
+          </div>
+        </div>
+        <div className="hero-image">
+          <img
+            src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80"
+            alt="Desarrollo web moderno"
+            className="hero-img"
+          />
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="features">
+        <h2 className="section-title">¿Por qué elegirnos?</h2>
+        <div className="features-grid">
+          {features.map((feature) => (
+            <div key={feature.id} className="feature-card">
+              <div className="feature-icon">{feature.icon}</div>
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Latest Articles Preview */}
+      <section className="latest-articles">
+        <h2 className="section-title">Últimos Artículos</h2>
+        <div className="articles-preview">
+          <article className="article-preview-card">
+            <img
+              src="https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400&q=80"
+              alt="Introducción a Next.js"
+              className="article-preview-img"
+            />
+            <div className="article-preview-content">
+              <span className="article-category">Framework</span>
+              <h3>Introducción a Next.js</h3>
+              <p>Aprende los fundamentos de Next.js, el framework de React más poderoso para producción.</p>
+              <Link href="/articles/nextjs-intro" className="read-more">
+                Leer más →
+              </Link>
+            </div>
+          </article>
+
+          <article className="article-preview-card">
+            <img
+              src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80"
+              alt="React Hooks avanzados"
+              className="article-preview-img"
+            />
+            <div className="article-preview-content">
+              <span className="article-category">React</span>
+              <h3>React Hooks Avanzados</h3>
+              <p>Domina los hooks más poderosos de React y crea componentes reutilizables y eficientes.</p>
+              <Link href="/articles/react-hooks" className="read-more">
+                Leer más →
+              </Link>
+            </div>
+          </article>
+
+          <article className="article-preview-card">
+            <img
+              src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80"
+              alt="Optimización de rendimiento"
+              className="article-preview-img"
+            />
+            <div className="article-preview-content">
+              <span className="article-category">Performance</span>
+              <h3>Optimización de Rendimiento</h3>
+              <p>Mejora la velocidad de tu aplicación web con técnicas de optimización probadas.</p>
+              <Link href="/articles/performance" className="read-more">
+                Leer más →
+              </Link>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="cta-section">
+        <h2>¿Listo para aprender?</h2>
+        <p>Únete a nuestra comunidad de desarrolladores y accede a contenido exclusivo</p>
+        <Link href="/contact" className="btn btn-primary">
+          Contactar Ahora
+        </Link>
+      </section>
+    </div>
+  );
+}
+</file>
+
+</files>
